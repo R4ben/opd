@@ -9,7 +9,6 @@ class ProfileRepository extends ProfileBaseRepo {
   Future<void> createProfile(Profile profile) async {}
 
   Future<void> updateProfile(Profile profile) async {
-    // TODO: implement updateProfile
     DocumentReference profileRef = userRef.doc(profile.id);
     if (profileRef.path.isEmpty) {
       createProfile(profile);
@@ -46,28 +45,21 @@ class ProfileRepository extends ProfileBaseRepo {
   }
 
   @override
-  Future<void> updateProfileNotes(String notes) {
-    // TODO: implement updateProfileNotes
-    throw UnimplementedError();
+  Future<void> updateProfilePhone({required String phone, required String userId}) {
+    return userRef
+        .doc(userId)
+        .update({'phone': phone}).catchError((erro) => print("nooo:$erro"));
   }
 
   @override
-  Future<void> updateProfilePhone(String phone) {
-    // TODO: implement updateProfilePhone
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateProfilePhoto(String photo, String userId) {
+  Future<void> updateProfilePhoto(String photo, String userId) async {
     userRef.doc(userId).update({'photo': photo});
 
-    throw UnimplementedError();
   }
 
   @override
   Future<void> removePhoto(String photo) async {
     await fire.child(photo).delete();
-    throw UnimplementedError();
   }
 
   @override
@@ -77,4 +69,11 @@ class ProfileRepository extends ProfileBaseRepo {
         .snapshots()
         .map((profile) => Profile.fromSnapshot(profile));
   }
+
+  @override
+  Future<void> updateProfileNotes({required String notes, required String userId}) {
+    // TODO: implement updateProfileNotes
+    throw UnimplementedError();
+  }
+
 }

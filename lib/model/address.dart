@@ -10,10 +10,9 @@ class AdressModel extends Equatable {
   final String email;
   final String phone;
 
-  AdressModel(this.zipCode, this.address_1, this.address_2, this.city,
+  const AdressModel(this.zipCode, this.address_1, this.address_2, this.city,
       this.country, this.island, this.email, this.phone);
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }

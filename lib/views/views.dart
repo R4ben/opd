@@ -1,7 +1,11 @@
 export 'home_page.dart';
 export 'mainscreen/main_screen.dart';
 export 'profile/profile_page.dart';
-export 'profile/profile_editor.dart';
+export 'profile/name_editor.dart';
+export 'profile/notes_editor.dart';
+export 'profile/email_editor.dart';
+export 'profile/endereco_editor.dart';
+export 'profile/phone_editor.dart';
 export 'product_card.dart';
 export 'splash_screen.dart';
 export 'cart/cart_view.dart';
@@ -9,3 +13,4 @@ export 'address/address_page.dart';
 export 'category_page.dart';
 export 'store/store_page.dart';
 export 'favorites/favorites.dart';
+export 'favorites/favorites_no_session.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:on_point_delivery/authenticator/session/session_bloc.dart';
 
 import '../../model/models.dart';
 import '../bloc/bloc.dart';
@@ -171,18 +172,35 @@ class ProductDetails extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 20.h, bottom: 20.h, left: 20.w, right: 20.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      color: Theme.of(context).colorScheme.background),
-                  child: Icon(
-                    Icons.favorite,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 40.h,
-                  ),
-                ),
+                //Favorites
+                BlocBuilder<SessionBloc, SessionState>(
+                    builder: (context, state) {
+                  if (state is Authenticated) {
+                    return BlocBuilder<FavoritesBloc, FavoritesState>(
+                        builder: (context, state) {
+                      if (state is FavoreitesLoaded) {
+                        if (state.products.contains(product)) {
+                          return GestureDetector(
+			  onTap: ()=>context.read<FavoritesBloc>().add(DislikeProduct(product:product)),
+                            child: FavoriteButton(
+                              color: Colors.red,
+                            ),
+                          );
+                        } else {
+                          return GestureDetector(
+			  onTap: ()=>context.read<FavoritesBloc>().add(LikeProduct(product:product)),
+                              child: FavoriteButton());
+                        }
+                      } else {
+                        return GestureDetector(
+			  onTap: ()=>context.read<FavoritesBloc>().add(LikeProduct(product:product)),
+			child: FavoriteButton(color: Colors.black,));
+                      }
+                    });
+                  } else {
+                    return const FavoriteButton(color: Colors.blue,);
+                  }
+                }),
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -261,6 +279,27 @@ class ProductDetails extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+}
+
+class FavoriteButton extends StatelessWidget {
+  const FavoriteButton({super.key, this.color});
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding:
+          EdgeInsets.only(top: 20.h, bottom: 20.h, left: 20.w, right: 20.w),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          color: Theme.of(context).colorScheme.background),
+      child: Icon(
+        Icons.favorite,
+        color: color ?? Theme.of(context).colorScheme.primary,
+        size: 40.h,
       ),
     );
   }

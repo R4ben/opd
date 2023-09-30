@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
+import 'product_model.dart';
+
 class Profile extends Equatable {
   final String? id;
   final String? email;
@@ -25,6 +27,7 @@ class Profile extends Equatable {
     String? phone,
     String? address,
     String? notes,
+  final List<Product>? likes
   ) {
     return Profile(
       id: id,
@@ -62,7 +65,6 @@ class Profile extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         id,
         email,

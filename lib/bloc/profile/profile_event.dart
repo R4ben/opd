@@ -4,14 +4,16 @@ abstract class ProfileEvent extends Equatable {
   const ProfileEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-enum FieldToUpdate { name, phone, email, bio }
+enum FieldToUpdate { name, phone, email, bio,likes }
 
 class ProfileChanged extends ProfileEvent {
   final Profile profile;
   const ProfileChanged({required this.profile});
+  @override
+  List<Object> get props => [profile];
 }
 
 class ChangeAvatarRequest extends ProfileEvent {}
@@ -19,6 +21,8 @@ class ChangeAvatarRequest extends ProfileEvent {}
 class OpenImagePiker extends ProfileEvent {
   final ImageSource imageSource;
   const OpenImagePiker({required this.imageSource});
+  @override
+  List<Object> get props => [imageSource];
 }
 
 class ProvideImagePath extends ProfileEvent {
@@ -47,9 +51,4 @@ class ProfilePhoneChanged extends ProfileEvent {
   const ProfilePhoneChanged({required this.phone});
   @override
   List<Object> get props => [phone];
-}
-
-class SaveProfileChanges extends ProfileEvent {
-  final FieldToUpdate fieldToUpdate;
-  const SaveProfileChanges({required this.fieldToUpdate});
 }

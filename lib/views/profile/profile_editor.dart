@@ -5,41 +5,24 @@ class ProfileEditorPage extends StatelessWidget {
   const ProfileEditorPage({
     super.key,
     required this.title,
-    required this.label,
-    required this.value,
-    required this.field,
+    required this.widgets, required this.onPressed,
   });
   final String title;
-  final String label;
-  final String value;
-  final String field;
+  final List<Widget> widgets;
+  final Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title, style: TextStyle(fontSize: 24.sp)),
+		    appBar: AppBar(
+			    actions: [IconButton(onPressed: onPressed, icon: Icon(Icons.done_outlined))],
+        title: Text(title, style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white)),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         child: SafeArea(
-          child: Stack(
+          child: Column(
             children: [
-              TextFormField(
-                autofocus: true,
-                initialValue: value,
-                decoration: InputDecoration(
-                  labelText: label,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Guardar"),
-                  style:
-                      ElevatedButton.styleFrom(fixedSize: Size(0.8.sw, 40.h)),
-                ),
-              ),
+	    ...widgets,
             ],
           ),
         ),

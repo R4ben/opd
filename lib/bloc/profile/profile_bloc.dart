@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../authenticator/auth/form_submission_status.dart';
 import '../../authenticator/models/user/user_models.dart';
@@ -69,7 +68,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileNameChanged>((event, emit) {
       if (state is ProfileLoaded) {
         var state = this.state as ProfileLoaded;
-        print(event.userName);
+	profileRepo.updateProfileName(userId: state.profile.id!,userName: event.userName);
         emit(state.copyWith(name: event.userName));
       }
     });
@@ -77,19 +76,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfilePhoneChanged>((event, emit) {
       if (state is ProfileLoaded) {
         var state = this.state as ProfileLoaded;
+	profileRepo.updateProfilePhone(userId: state.profile.id!,phone: event.phone);
         emit(state.copyWith(phone: event.phone));
-      }
-    });
-    on<SaveProfileChanges>((event, emit) {
-      if (state is ProfileLoaded) {
-        var state = this.state as ProfileLoaded;
-        switch (event.fieldToUpdate) {
-          case FieldToUpdate.name:
-            profileRepo.updateProfileName(
-                userId: state.profile.id!, userName: state.profile.name!);
-            break;
-          default:
-        }
       }
     });
   }

@@ -5,7 +5,6 @@ class Product extends Equatable {
   final String id;
   final String ref;
   final String shortDescription;
-
   final String name;
   final String category;
   final String description;
@@ -52,14 +51,30 @@ class Product extends Equatable {
   Map<String, dynamic> toDocument() {
     return {
       'id': id,
-      'name': name,
+      'Name': name,
       'category': category,
       'description': description,
-      'imageUrl': imageUrl,
+      'images': imageUrl,
       'price': price,
+      'ref': ref,
+      'short_description': shortDescription,
     };
   }
 
+  factory Product.fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> snap) {
+    return Product(
+      id: snap.id,
+      name: snap['Name'],
+      category: snap['category'],
+      description: snap['description'],
+      imageUrl: snap['images'],
+      price: snap['price'] ?? 0,
+      ref: snap['ref'],
+      shortDescription: snap['short_description'],
+      // index: snap['index'],
+    );
+  }
   factory Product.fromSnapshot(
       QueryDocumentSnapshot<Map<String, dynamic>> snap) {
     return Product(

@@ -12,7 +12,11 @@ part 'session_state.dart';
 class SessionBloc extends Bloc<SessionEvent, SessionState> {
   final AuthRepository _authRepo;
   late StreamSubscription<user_model.User> _userSubscription;
-  user_model.User get user => (state as Authenticated).user;
+  user_model.User get user{
+	  if(state is Authenticated){
+	  return (state as Authenticated).user;
+	  }else { return user_model.User.empty; }
+	}
   SessionBloc({required AuthRepository authRepo})
       : _authRepo = authRepo,
         super(

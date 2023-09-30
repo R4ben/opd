@@ -26,4 +26,10 @@ class ProductRepository {
             .map((category) => Product.fromSnapshot(category))
             .toList());
   }
+  Future<Product> getProductById(String productId) {
+    return  _firestore
+        .collection('products')
+        .doc(productId).get()
+	.then((product)=>Product.fromDocument(product ));
+  }
 }

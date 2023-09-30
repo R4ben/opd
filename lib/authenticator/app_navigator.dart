@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/bloc.dart';
-import '../repo/profile/base_profile_repo.dart';
 import '../views/profile/profile_page.dart';
-import 'auth/auth_cubit.dart';
 import 'auth/auth_navigator.dart';
 import 'session/session_bloc.dart';
 //import 'loading_view.dart';
@@ -21,23 +18,15 @@ class SessionNavigator extends StatelessWidget {
 
           // Show auth flow
           if (state is Unauthenticated)
-            MaterialPage(
-              child: BlocProvider(
-                create: (context) =>
-                    AuthCubit(sessionBloc: context.read<SessionBloc>()),
-                child: const AuthNavigator(),
+            const MaterialPage(
+              child:  AuthNavigator(),
               ),
-            ),
 
           // Show session flow
           if (state is Authenticated)
-            MaterialPage(
-                child: BlocProvider(
-              create: (context) => ProfileBloc(
-                  profileRepo: context.read<ProfileRepository>(),
-                  user: context.read<SessionBloc>().user),
-              child: const ProfilePage(),
-            ))
+            const MaterialPage(
+                child: ProfilePage(),
+            )
         ],
         onPopPage: (route, result) => route.didPop(result),
       );

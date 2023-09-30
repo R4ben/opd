@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:on_point_delivery/authenticator/auth/auth_cubit.dart';
 import 'authenticator/auth/auth_repository.dart';
 import 'authenticator/session/session_bloc.dart';
 import 'bloc/bloc.dart';
@@ -29,6 +30,7 @@ class AppProviders extends StatelessWidget {
         RepositoryProvider(create: (context) => CategoryRepository()),
         RepositoryProvider(create: (context) => ProductRepository()),
         RepositoryProvider(create: (context) => ProfileRepository()),
+        RepositoryProvider(create: (context) => FavoritesRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -37,14 +39,26 @@ class AppProviders extends StatelessWidget {
                 SessionBloc(authRepo: context.read<AuthRepository>()),
           ),
           BlocProvider(
-              create: (context) => CategoryBloc(
-                  categoryRepository: context.read<CategoryRepository>())),
+            create: (context) => CategoryBloc(
+                categoryRepository: context.read<CategoryRepository>()),
+          ),
           BlocProvider(
               create: (context) => ProductBloc(
                   categoryBloc: context.read<CategoryBloc>(),
                   productRepository: context.read<ProductRepository>())),
           BlocProvider(create: (context) => CartBloc()..add(CartStarted())),
           BlocProvider(create: (context) => NavigationBloc()),
+          BlocProvider(
+              create: (context) =>
+                  AuthCubit(sessionBloc: context.read<SessionBloc>())),
+          BlocProvider(
+              create: (context) => ProfileBloc(
+                  user: context.read<SessionBloc>().user,
+                  profileRepo: context.read<ProfileRepository>())),
+          BlocProvider(
+              create: (context) => FavoritesBloc(
+                  userId: context.read<SessionBloc>().user.id!,
+                  favoritesRepository: context.read<FavoritesRepository>())),
         ],
         child: const MyApp(),
       ),

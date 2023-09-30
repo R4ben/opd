@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:on_point_delivery/authenticator/app_navigator.dart';
+import 'package:on_point_delivery/authenticator/session/session_bloc.dart';
 import '../bloc/bloc.dart';
 import '../model/models.dart';
 import '../views/views.dart';
@@ -69,7 +70,7 @@ final routes = GoRouter(
             GoRoute(
               path: '/cartPage',
               builder: (context, state) {
-                return CartPage();
+                return const CartPage();
               },
             ),
           ],
@@ -80,7 +81,13 @@ final routes = GoRouter(
             GoRoute(
               path: '/favorite',
               builder: (context, GoRouterState state) {
-                return FavoritesPage();
+                return BlocBuilder<SessionBloc,SessionState>(
+                  builder: (context,state) {
+		  if(state is Authenticated){
+                    return const FavoritesPage();
+		  }else{return const FavoritesNoSession();}
+                  }
+                );
               },
             )
           ],
@@ -91,17 +98,31 @@ final routes = GoRouter(
             GoRoute(
               path: '/profile',
               builder: (context, GoRouterState state) {
-                return SessionNavigator();
+                return const SessionNavigator();
               },
               routes: [
                 GoRoute(
-                  path: 'profileEditor/:title/:label/:value/:field',
+                  path: 'nameEditor',
                   builder: (context, state) {
-                    final String title = state.pathParameters['title']!;
-                    final String label = state.pathParameters['label']!;
-                    final String value = state.pathParameters['value']!;
-                    final String field = state.pathParameters['field']!;
-                    return ProfileEditorPage(title: title, label: label, value: value,field: field,);
+                    return NameEditor();
+                  },
+                ),
+                GoRoute(
+                  path: 'phoneEditor',
+                  builder: (context, state) {
+                    return PhoneEditor();
+                  },
+                ),
+                GoRoute(
+                  path: 'emailEditor',
+                  builder: (context, state) {
+                    return EmailEditor();
+                  },
+                ),
+                GoRoute(
+                  path: 'enderecoEditor',
+                  builder: (context, state) {
+                    return AddressPage();
                   },
                 ),
               ],

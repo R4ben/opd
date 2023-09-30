@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../authenticator/session/session_bloc.dart';
 import '../../bloc/bloc.dart';
-import '../../bloc/profile/profile_bloc.dart';
 import '../../widgets/app_icon.dart';
 import '../../widgets/perfil_widgets.dart';
 
@@ -27,13 +24,15 @@ class ProfilePage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+		actions: [
+		IconButton(onPressed: ()=>context.read<SessionBloc>().add(SessionLogOutRequest()), icon: Icon(Icons.logout_outlined))
+		],
             backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
             title: Text(
               'Perfil',
               style: Theme.of(context)
                   .textTheme
-                  .headlineLarge!
+                  .headlineMedium!
                   .copyWith(color: Colors.white),
             )),
         body: Column(
@@ -61,11 +60,11 @@ class ProfilePage extends StatelessWidget {
                       _profileAddress(),
                       SizedBox(height: 20.h),
                       // bio
-                      _profileNote(),
-                      SizedBox(height: 20.h),
-                      SizedBox(height: 20.h),
-                      _profileLogOut(context),
-                      SizedBox(height: 20.h),
+                     // _profileNote(),
+                     // SizedBox(height: 20.h),
+                     // SizedBox(height: 20.h),
+                      //_profileLogOut(context),
+                      //SizedBox(height: 20.h),
                     ],
                   ),
                 ),
@@ -128,15 +127,18 @@ class ProfilePage extends StatelessWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         if (state is ProfileLoaded) {
-          return AccountWidget(
-            appIcons: AppIcons(
-              icon: Icons.message_outlined,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              iconColor: Colors.white,
-              iconSize: 25.r,
-              size: 50.r,
+          return GestureDetector(
+	  onTap: ()=>context.push('/profile/notesEditor'),
+            child: AccountWidget(
+              appIcons: AppIcons(
+                icon: Icons.message_outlined,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                iconColor: Colors.white,
+                iconSize: 25.r,
+                size: 50.r,
+              ),
+              text: state.profile.notes ?? 'Bio',
             ),
-            text: state.profile.notes ?? 'Bio',
           );
         } else {
           return Center(child: CircularProgressIndicator());
@@ -150,7 +152,7 @@ class ProfilePage extends StatelessWidget {
       builder: (context, state) {
         return GestureDetector(
           onTap: () =>
-              context.read<NavigationBloc>().add(NavigateToAddressPage()),
+                context.push('/profile/enderecoEditor'),
           child: AccountWidget(
             appIcons: AppIcons(
               icon: Icons.location_on_outlined,
@@ -197,7 +199,7 @@ class ProfilePage extends StatelessWidget {
           String value = state.profile.name ?? "";
           return GestureDetector(
             onTap: () {
-              context.push('/profile/profileEditor/$title/$label/$value/name');
+              context.push('/profile/nameEditor');
             },
             child: AccountWidget(
               appIcons: AppIcons(
@@ -226,7 +228,7 @@ class ProfilePage extends StatelessWidget {
           String value = state.profile.phone ?? "Phone";
           return GestureDetector(
             onTap: () => context
-                .push('/profile/profileEditor/$title/$label/$value/phone'),
+                .push('/profile/phoneEditor'),
             child: AccountWidget(
               appIcons: AppIcons(
                 icon: Icons.phone_outlined,
