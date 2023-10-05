@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -13,6 +12,18 @@ class CustomerShipping extends Equatable {
   final String postcode;
   final String country;
 
+  const CustomerShipping.empty({
+    this.firstName = '',
+    this.lastName = '',
+    this.company = '',
+    this.address_1 = '',
+    this.address_2 = '',
+    this.city = '',
+    this.state = '',
+    this.postcode = '',
+    this.country = '',
+  });
+
   const CustomerShipping({
     required this.firstName,
     required this.lastName,
@@ -24,6 +35,30 @@ class CustomerShipping extends Equatable {
     required this.postcode,
     required this.country,
   });
+  CustomerShipping copyWith({
+    String? firstName,
+    String? lastName,
+    String? company,
+    String? address_1,
+    String? address_2,
+    String? city,
+    String? state,
+    String? postcode,
+    String? country,
+  }) {
+    return CustomerShipping(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      company: company ?? this.company,
+      address_1: address_1 ?? this.address_1,
+      address_2: address_2 ?? this.address_2,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      postcode: postcode ?? this.postcode,
+      country: country ?? this.country,
+    );
+  }
+
   factory CustomerShipping.fromDocument(DocumentSnapshot snap) {
     return CustomerShipping(
       firstName: snap['firstName'],
@@ -52,5 +87,15 @@ class CustomerShipping extends Equatable {
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        firstName,
+        lastName,
+        company,
+        address_1,
+        address_2,
+        city,
+        state,
+        postcode,
+        country,
+      ];
 }

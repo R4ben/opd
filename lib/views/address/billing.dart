@@ -39,16 +39,15 @@ class BillingPage extends StatelessWidget {
               _phone(),
               SizedBox(height: 8.h),
               _nif(),
-              SizedBox(height: 8.h),
+              SizedBox(height: 16.h),
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      print('tudo GG');
                     } else {
-                      print('Nimaliza');
+                      context.read<BillingBloc>().add(UpdateBilling());
                     }
                   },
-                  child: Text('Salvar')),
+                  child: Text('Guardar Morada')),
               SizedBox(height: 8.h),
             ],
           ),
@@ -60,13 +59,17 @@ class BillingPage extends StatelessWidget {
   Widget _firstName() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
-        return InputTextForm(
+        return TextFormField(
+          key: Key('firstName'),
           initialValue: state.customerBilling.firstName,
-          labelText: 'Primeiro nome',
-          icon: Icons.person_outlined,
+          decoration: const InputDecoration(
+            labelText: 'Nome',
+            icon: Icon(Icons.person_outlined),
+          ),
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingFirstName(firstName: value)),
+          validator: (value) => state.firstNameValidator(),
         );
       },
     );
@@ -75,13 +78,17 @@ class BillingPage extends StatelessWidget {
   Widget _lastName() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController lastNameController = TextEditingController();
         return InputTextForm(
           initialValue: state.customerBilling.lastName,
-          labelText: 'Ultimo nome',
+          key: const Key('lastName'),
+          labelText: 'Apelido',
           icon: Icons.person_outlined,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingLastName(lastName: value)),
+          validator: (value) => state.firstNameValidator(),
+          textController: lastNameController,
         );
       },
     );
@@ -90,13 +97,17 @@ class BillingPage extends StatelessWidget {
   Widget _company() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController companyController = TextEditingController();
         return InputTextForm(
+          key: Key('company'),
           initialValue: state.customerBilling.company,
           labelText: 'Nome de Empresa',
           icon: Icons.store_outlined,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingCompanyName(companyName: value)),
+          validator: (value) => state.companyValidator(),
+          textController: companyController,
         );
       },
     );
@@ -105,13 +116,17 @@ class BillingPage extends StatelessWidget {
   Widget _address1() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController address1Controller = TextEditingController();
         return InputTextForm(
+          key: Key('address1'),
           initialValue: state.customerBilling.address_1,
           labelText: 'Morada',
           icon: Icons.location_on_outlined,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingAddress1Name(address1: value)),
+          validator: (value) => state.address1Validator(),
+          textController: address1Controller,
         );
       },
     );
@@ -120,13 +135,17 @@ class BillingPage extends StatelessWidget {
   Widget _address2() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController address2Controller = TextEditingController();
         return InputTextForm(
+          key: Key('address2'),
           initialValue: state.customerBilling.address_2,
           labelText: 'Morada',
           icon: Icons.location_on_outlined,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingAddress2Name(address2: value)),
+          validator: (value) => state.address2Validator(),
+          textController: address2Controller,
         );
       },
     );
@@ -135,12 +154,16 @@ class BillingPage extends StatelessWidget {
   Widget _city() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController cityController = TextEditingController();
         return InputTextForm(
+          key: Key('city'),
           initialValue: state.customerBilling.city,
-          labelText: 'Cidade',
+          labelText: 'Localidade',
           icon: Icons.location_city_outlined,
           onChanged: (value) =>
               context.read<BillingBloc>().add(ChangeBillingCity(city: value)),
+          validator: (value) => state.cityValidator(),
+          textController: cityController,
         );
       },
     );
@@ -149,12 +172,16 @@ class BillingPage extends StatelessWidget {
   Widget _state() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController stateController = TextEditingController();
         return InputTextForm(
+          key: Key('state'),
           initialValue: state.customerBilling.state,
           labelText: 'Estado',
           icon: Icons.flag,
           onChanged: (value) =>
               context.read<BillingBloc>().add(ChangeBillingState(state: value)),
+          validator: (value) => state.stateValidator(),
+          textController: stateController,
         );
       },
     );
@@ -163,13 +190,17 @@ class BillingPage extends StatelessWidget {
   Widget _postcode() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController postCodeController = TextEditingController();
         return InputTextForm(
+          key: Key('postcode'),
           initialValue: state.customerBilling.postcode,
-          labelText: 'Codigo Postal',
-          icon: Icons.cloud_done_outlined,
+          labelText: 'Código postal',
+          icon: Icons.local_post_office_outlined,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingPostCode(postCode: value)),
+          validator: (value) => state.postCodeValidator(),
+          textController: postCodeController,
         );
       },
     );
@@ -178,13 +209,17 @@ class BillingPage extends StatelessWidget {
   Widget _country() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController countryController = TextEditingController();
         return InputTextForm(
+          key: Key('country'),
           initialValue: state.customerBilling.country,
           labelText: 'Pais',
           icon: Icons.flag,
           onChanged: (value) => context
               .read<BillingBloc>()
               .add(ChangeBillingCountry(country: value)),
+          validator: (value) => state.countryValidator(),
+          textController: countryController,
         );
       },
     );
@@ -193,12 +228,16 @@ class BillingPage extends StatelessWidget {
   Widget _email() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController emailController = TextEditingController();
         return InputTextForm(
+          key: Key('email'),
           initialValue: state.customerBilling.email,
-          labelText: 'E-mail',
+          labelText: 'Endereço de email',
           icon: Icons.email_outlined,
           onChanged: (value) =>
               context.read<BillingBloc>().add(ChangeBillingEmail(email: value)),
+          validator: (value) => state.emailValidator(),
+          textController: emailController,
         );
       },
     );
@@ -207,12 +246,16 @@ class BillingPage extends StatelessWidget {
   Widget _phone() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController phoneController = TextEditingController();
         return InputTextForm(
+          key: Key('phone'),
           initialValue: state.customerBilling.phone,
           labelText: 'Telefone/Telemovel',
           icon: Icons.phone_outlined,
           onChanged: (value) =>
               context.read<BillingBloc>().add(ChangeBillingPhone(phone: value)),
+          validator: (value) => state.phoneValidator(),
+          textController: phoneController,
         );
       },
     );
@@ -221,12 +264,16 @@ class BillingPage extends StatelessWidget {
   Widget _nif() {
     return BlocBuilder<BillingBloc, BillingState>(
       builder: (context, state) {
+        TextEditingController nifController = TextEditingController();
         return InputTextForm(
+          key: Key('nif'),
           initialValue: state.customerBilling.nif,
           labelText: 'NIF',
           icon: Icons.person_outlined,
           onChanged: (value) =>
               context.read<BillingBloc>().add(ChangeBillingNif(nif: value)),
+          validator: (value) => state.nifValidator(),
+          textController: nifController,
         );
       },
     );
@@ -241,12 +288,14 @@ class InputTextForm extends StatelessWidget {
     required this.onChanged,
     required this.validator,
     super.key,
+    required this.textController,
   });
+  final TextEditingController textController;
   final String initialValue;
   final String labelText;
   final IconData icon;
-  final String? Function(String?)? validator;
-  final Function(String) onChanged;
+  final String? Function(String?) validator;
+  final void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return TextFormField(

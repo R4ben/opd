@@ -15,4 +15,12 @@ class BillingRepo {
         .get()
         .then((value) => CustomerBilling.fromDocument(value));
   }
+
+  Future createBilling(CustomerBilling customerBilling) {
+    return firebilling
+        .doc(userId)
+        .collection('address')
+        .doc('billing')
+        .set(customerBilling.toDocument());
+  }
 }

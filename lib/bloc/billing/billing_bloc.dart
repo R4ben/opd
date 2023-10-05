@@ -18,45 +18,45 @@ class BillingBloc extends Bloc<BillingEvent, BillingState> {
         print(e);
       }
     });
+    on<UpdateBilling>((event, emit) async {
+      await _billingRepo.createBilling(state.customerBilling);
+    });
 
     on<ChangeBillingFirstName>((event, emit) {
       emit(state.copyWith(firstName: event.firstName));
     });
     on<ChangeBillingLastName>((event, emit) {
-      emit(state.copyWith(firstName: event.lastName));
+      emit(state.copyWith(lastName: event.lastName));
     });
     on<ChangeBillingCompanyName>((event, emit) {
-      emit(state.copyWith(firstName: event.companyName));
+      emit(state.copyWith(company: event.companyName));
     });
     on<ChangeBillingAddress1Name>((event, emit) {
-      emit(state.copyWith(firstName: event.address1));
-    });
-    on<ChangeBillingAddress1Name>((event, emit) {
-      emit(state.copyWith(firstName: event.address1));
+      emit(state.copyWith(address_1: event.address1));
     });
     on<ChangeBillingAddress2Name>((event, emit) {
-      emit(state.copyWith(firstName: event.address2));
+      emit(state.copyWith(address_2: event.address2));
     });
     on<ChangeBillingCity>((event, emit) {
-      emit(state.copyWith(firstName: event.city));
+      emit(state.copyWith(city: event.city));
     });
     on<ChangeBillingState>((event, emit) {
-      emit(state.copyWith(firstName: event.state));
+      emit(state.copyWith(state: event.state));
     });
     on<ChangeBillingPostCode>((event, emit) {
-      emit(state.copyWith(firstName: event.postCode));
+      emit(state.copyWith(postcode: event.postCode));
     });
     on<ChangeBillingCountry>((event, emit) {
-      emit(state.copyWith(firstName: event.country));
+      emit(state.copyWith(country: event.country));
     });
     on<ChangeBillingEmail>((event, emit) {
-      emit(state.copyWith(firstName: event.email));
+      emit(state.copyWith(email: event.email));
     });
     on<ChangeBillingPhone>((event, emit) {
-      emit(state.copyWith(firstName: event.phone));
+      emit(state.copyWith(phone: event.phone));
     });
     on<ChangeBillingNif>((event, emit) {
-      emit(state.copyWith(firstName: event.nif));
+      emit(state.copyWith(nif: event.nif));
     });
   }
 }
